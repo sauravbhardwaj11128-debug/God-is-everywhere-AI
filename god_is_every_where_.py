@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1gNCgO3ESSIDEKpVMqWiQP3iCaygXNaHL
 """
 
-!pip install langchain langchain-community google-generativeai requests geopy wikipedia
+pip install langchain langchain-community google-generativeai requests geopy wikipedia
 
 from google.colab import userdata
 userdata.get('gemini_api')
