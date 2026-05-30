@@ -11,8 +11,8 @@ genai.configure(api_key=st.secrets["GEMINI_API"])
 
 model = genai.GenerativeModel("gemini-1.5-flash")
 
-st.title("🛕 AI Temple Finder")
-st.write("Find nearby temples using OpenStreetMap + Gemini AI")
+st.title("🛕 GOD IS EVERYWHERE")
+st.write("Find and go Temples Nearby")
 col1, col2 = st.columns(2)
 
 with col1:
