@@ -50,7 +50,7 @@ for temple in temples:
 
 import requests
 import wikipedia
-import geopy.geocoders import Nomination
+from geopy.geocoders import Nominatim
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 # Location
