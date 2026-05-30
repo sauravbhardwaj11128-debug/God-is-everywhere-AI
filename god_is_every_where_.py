@@ -44,14 +44,20 @@ if st.button("🔍 Find Nearby Temples"):
         out;
         """
 
-        url = "https://overpass-api.de/api/interpreter"
+        url = "https://overpass.kumi.systems/api/interpreter"
+        response = requests.get(url, params={"data": query}, timeout=30)
 
-        response = requests.get(
-            url,
-            params={'data': query}
-        )
-
+if response.status_code == 200:
+    try:
         data = response.json()
+    except Exception as e:
+        st.error(f"JSON Error: {e}")
+        st.write(response.text[:500])
+else:
+    st.error(f"API Error: {response.status_code}")
+    st.write(response.text[:500])
+
+        
 
         temples = []
 
