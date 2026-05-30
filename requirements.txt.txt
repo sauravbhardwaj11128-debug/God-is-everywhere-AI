@@ -1,0 +1,7 @@
+streamlit
+google-generativeai
+langchain
+langchain-community
+requests
+geopy
+wikipedia
