@@ -48,10 +48,10 @@ print(f"Found {len(temples)} temples.")
 for temple in temples:
     print(temple)
 
-pip install wikipedia
-
 import requests
 import wikipedia
+import geopy.geocoders import Nomination
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 # Location
 lat = 28.4595
@@ -178,10 +178,7 @@ for temple in temples:
     maps_link = f"https://www.google.com/maps?q={temple['lat']},{temple['lon']}"
     print(maps_link)
 
-pip install -q langchain langchain-community
 
-pip uninstall -y langchain langchain-community
-pip install langchain==0.1.20 langchain-community==0.0.38
 
 from langchain_core.prompts import PromptTemplate
 from langchain.chains import LLMChain
