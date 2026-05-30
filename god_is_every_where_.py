@@ -3,11 +3,11 @@ import requests
 import google.generativeai as genai
 from geopy.distance import geodesic
 st.set_page_config(
-    page_title="AI Temple Finder",
+    page_title="God is Everyuwhere Ai",
     page_icon="🛕",
     layout="wide"
 )
-genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+genai.configure(api_key=st.secrets["gemini_api"])
 
 model = genai.GenerativeModel("gemini-1.5-flash")
 
