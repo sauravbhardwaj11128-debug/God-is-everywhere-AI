@@ -2,17 +2,20 @@ import streamlit as st
 import requests
 import google.generativeai as genai
 from geopy.distance import geodesic
+
 st.set_page_config(
-    page_title="God is Everywhere Ai",
+    page_title="God is Everywhere AI",
     page_icon="🛕",
     layout="wide"
 )
+
 genai.configure(api_key=st.secrets["GEMINI_API"])
 
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 st.title("🛕 GOD IS EVERYWHERE")
 st.write("Find and go Temples Nearby")
+
 col1, col2 = st.columns(2)
 
 with col1:
@@ -34,96 +37,129 @@ if st.button("🔍 Find Nearby Temples"):
 
         query = f"""
         [out:json];
-
         (
           node["amenity"="place_of_worship"]
           ["religion"="hindu"]
           (around:{radius},{lat},{lon});
         );
-
         out;
         """
 
         url = "https://overpass.kumi.systems/api/interpreter"
-        response = requests.get(url, params={"data": query}, timeout=30)
 
-if response.status_code == 200:
-    try:
-        data = response.json()
-    except Exception as e:
-        st.error(f"JSON Error: {e}")
-        st.write(response.text[:500])
-else:
-    st.error(f"API Error: {response.status_code}")
-    st.write(response.text[:500])
-    temples = []
+        try:
+            response = requests.get(
+                url,
+                params={"data": query},
+                timeout=30
+            )
 
-        for element in data['elements']:
+            if response.status_code == 200:
 
-            tags = element.get('tags', {})
+                try:
+                    data = response.json()
 
-            name = tags.get('name')
+                except Exception as e:
+                    st.error(f"JSON Error: {e}")
+                    st.write(response.text[:500])
+                    st.stop()
 
-            if name:
+                temples = []
 
-                temple = {
-                    "name": name,
-                    "lat": element['lat'],
-                    "lon": element['lon']
-                }
+                for element in data.get("elements", []):
 
-                temples.append(temple)
+                    tags = element.get("tags", {})
 
-        if temples:
+                    name = tags.get("name")
 
-            st.success(f"{len(temples)} temples found!")
+                    if name:
 
-            for temple in temples[:5]:
+                        temple = {
+                            "name": name,
+                            "lat": element["lat"],
+                            "lon": element["lon"]
+                        }
 
-                st.divider()
+                        temples.append(temple)
 
-                st.subheader(f"🛕 {temple['name']}")
+                if temples:
 
-                user_location = (float(lat), float(lon))
+                    st.success(f"{len(temples)} temples found!")
 
-                temple_location = (
-                    temple['lat'],
-                    temple['lon']
+                    for temple in temples[:5]:
+
+                        st.divider()
+
+                        st.subheader(f"🛕 {temple['name']}")
+
+                        user_location = (
+                            float(lat),
+                            float(lon)
+                        )
+
+                        temple_location = (
+                            temple["lat"],
+                            temple["lon"]
+                        )
+
+                        distance = geodesic(
+                            user_location,
+                            temple_location
+                        ).km
+
+                        st.write(
+                            f"📍 Distance: {distance:.2f} km"
+                        )
+
+                        maps_link = (
+                            f"https://www.openstreetmap.org/"
+                            f"?mlat={temple['lat']}"
+                            f"&mlon={temple['lon']}"
+                        )
+
+                        st.markdown(
+                            f"[🗺 OpenStreetMap Location]({maps_link})"
+                        )
+
+                        prompt = f"""
+                        Give detailed information about
+                        {temple['name']} temple.
+
+                        Include:
+                        - History
+                        - Timings
+                        - Importance
+                        - Famous things
+                        - Visitor tips
+
+                        Keep response clean and readable.
+                        """
+
+                        try:
+                            ai_response = model.generate_content(
+                                prompt
+                            )
+
+                            st.write(
+                                ai_response.text
+                            )
+
+                        except Exception as e:
+                            st.warning(
+                                "Gemini response unavailable."
+                            )
+                            st.write(str(e))
+
+                else:
+                    st.warning(
+                        "No temples found nearby."
+                    )
+
+            else:
+                st.error(
+                    f"API Error: {response.status_code}"
                 )
+                st.write(response.text[:500])
 
-                distance = geodesic(
-                    user_location,
-                    temple_location
-                ).km
-
-                st.write(f"📍 Distance: {distance:.2f} km")
-
-                maps_link = (
-                    f"https://www.openstreetmap.org/"
-                    f"?mlat={temple['lat']}"
-                    f"&mlon={temple['lon']}"
-                )
-
-                st.write("🗺 Map:", maps_link)
-
-                prompt = f"""
-                Give detailed information about
-                {temple['name']} temple.
-
-                Include:
-
-                - History
-                - Timings
-                - Importance
-                - Famous things
-                - Visitor tips
-
-                Keep response clean and readable.
-                """
-
-                ai_response = model.generate_content(prompt)
-
-                st.write(ai_response.text)
-
-        else:
-            st.error("No temples found nearby.")
+        except Exception as e:
+            st.error(f"Unexpected Error: {e}")
