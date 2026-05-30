@@ -45,7 +45,7 @@ if st.button("🔍 Find Nearby Temples"):
         out;
         """
 
-        url = "https://overpass.kumi.systems/api/interpreter"
+        url = "https://overpass-api.de/api/interpreter"
 
         try:
             response = requests.get(
