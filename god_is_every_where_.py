@@ -7,7 +7,7 @@ st.set_page_config(
     page_icon="🛕",
     layout="wide"
 )
-genai.configure(api_key=st.secrets["gemini_api"])
+genai.configure(api_key=st.secrets["GEMINI_API"])
 
 model = genai.GenerativeModel("gemini-1.5-flash")
 
