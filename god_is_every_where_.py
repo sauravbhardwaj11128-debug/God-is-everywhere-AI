@@ -3,7 +3,7 @@ import requests
 import google.generativeai as genai
 from geopy.distance import geodesic
 st.set_page_config(
-    page_title="God is Everyuwhere Ai",
+    page_title="God is Everywhere Ai",
     page_icon="🛕",
     layout="wide"
 )
