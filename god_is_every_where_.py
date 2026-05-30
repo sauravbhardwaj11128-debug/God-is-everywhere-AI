@@ -56,7 +56,7 @@ if response.status_code == 200:
 else:
     st.error(f"API Error: {response.status_code}")
     st.write(response.text[:500])
-        temples = []
+    temples = []
 
         for element in data['elements']:
 
