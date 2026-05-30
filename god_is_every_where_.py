@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1gNCgO3ESSIDEKpVMqWiQP3iCaygXNaHL
 """
 import streamlit as st
-gemini_api = st.secrets("gemini_api")
+gemini_api = st.secrets["gemini_api"]
 
 import google.generativeai as genai
 genai.configure(api_key=userdata.get('gemini_api'))
