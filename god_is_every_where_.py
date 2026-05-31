@@ -52,7 +52,7 @@ if st.button("🔍 Find Nearby Temples"):
                 url,
                 data=query,
                 headers={
-                    "User-Agent": "God is Everywhere/1.0"}
+                    "User-Agent": "God is Everywhere/1.0"},
                 timeout=60
             )
 
