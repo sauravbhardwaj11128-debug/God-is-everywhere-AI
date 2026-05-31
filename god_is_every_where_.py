@@ -51,7 +51,7 @@ if st.button("🔍 Find Nearby Temples"):
             response = requests.get(
                 url,
                 params={"data": query},
-                timeout=30
+                timeout=120
             )
 
             if response.status_code == 200:
