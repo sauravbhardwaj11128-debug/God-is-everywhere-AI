@@ -26,9 +26,9 @@ with col2:
 
 radius = st.slider(
     "Search Radius (meters)",
-    1000,
-    10000,
-    5000
+    1000
+    
+    
 )
 
 if st.button("🔍 Find Nearby Temples"):
@@ -45,13 +45,15 @@ if st.button("🔍 Find Nearby Temples"):
         out;
         """
 
-        url = "https://overpass.kumi.systems/api/interpreter"
+        url = "https://overpass-api.de/api/interpreter"
 
         try:
-            response = requests.get(
+            response = requests.post(
                 url,
-                params={"data": query},
-                timeout=120
+                data=query,
+                headers={
+                    "User-Agent": "God is Everywhere/1.0"}
+                timeout=60
             )
 
             if response.status_code == 200:
